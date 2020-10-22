@@ -5,7 +5,7 @@ host=localhost
 
 [ci]
 schema=ci
-host=localhost
+host=127.0.0.1
 port=3306
 allow-unsafe
 user=root
