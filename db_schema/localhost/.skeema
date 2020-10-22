@@ -2,8 +2,13 @@ default-character-set=utf8
 default-collation=utf8_general_ci
 flavor=mysql:5.7
 host=localhost
-socket=/tmp/mysql.sock
+
+[ci]
+schema=ci
+host=127.0.0.1
+allow-unsafe
 user=root
+password=password
 
 [development]
 schema=testdb
