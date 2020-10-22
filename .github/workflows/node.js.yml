@@ -17,7 +17,7 @@ jobs:
     services:
       # Use to different mysql instances to simulate higher environment for which this is the case
       # Label used to access the service container
-      mysql-master:
+      mysql:
         # Docker Hub image
         image: mysql:5.7
         env:
@@ -36,9 +36,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: donwload skeema
+      env:
+          PORT: ${{ job.services.mysql.ports[3306] }}
       run: | 
         wget https://github.com/skeema/skeema/releases/download/v1.4.5/skeema_1.4.5_linux_amd64.tar.gz
         tar -xf skeema_1.4.5_linux_amd64.tar.gz
         chmod +x skeema
-        ./skeema push ci
+        ./skeema push ci --port=$PORT
       
