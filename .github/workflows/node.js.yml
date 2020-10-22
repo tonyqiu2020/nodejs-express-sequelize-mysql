@@ -49,17 +49,13 @@ jobs:
           PORT: ${{ job.services.mysql.ports[3306] }}
       run: | 
         ./skeema push ci --port=$PORT
-    - name: switch to branch
+    - name: switch to current feature branch
       uses: actions/checkout@v2
-    - name: donwload skeema
-      env:
-          PORT: ${{ job.services.mysql.ports[3306] }}
-      run: | 
-        wget https://github.com/skeema/skeema/releases/download/v1.4.5/skeema_1.4.5_linux_amd64.tar.gz
-        tar -xf skeema_1.4.5_linux_amd64.tar.gz
-        chmod +x skeema
+      with:
+        path: current-repo
     - name: lint and diff
       env:
             PORT: ${{ job.services.mysql.ports[3306] }}
       run: |
-        ./skeema diff ci --port=$PORT
+        cd current-repo
+        ../skeema diff ci --port=$PORT
