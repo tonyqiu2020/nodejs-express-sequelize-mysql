@@ -2,14 +2,14 @@ default-character-set=utf8
 default-collation=utf8_general_ci
 flavor=mysql:5.7
 host=localhost
-user=root
 
 [ci]
 schema=ci
 host=localhost
 port=3306
 allow-unsafe
-user=test
+user=root
+password=password
 
 [development]
 schema=testdb
