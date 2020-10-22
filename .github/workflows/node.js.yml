@@ -6,12 +6,36 @@ name: Node.js CI
 on:
   pull_request:
     branches: [ master ]
+env:
+
+  DATABASE_HOST: mysql-master
+  DATABASE_HOST_READ_ONLY: mysql-master # set to master for now
+  DATABASE_PASSWORD: password
+  DATABASE_NAME: test
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    services:
+      # Use to different mysql instances to simulate higher environment for which this is the case
+      # Label used to access the service container
+      mysql-master:
+        # Docker Hub image
+        image: mysql:5.7
+        env:
+          MYSQL_USER: test # Doesn't matter, we only use root
+          MYSQL_PASSWORD: ${{ env.DATABASE_PASSWORD }}
+          MYSQL_DATABASE: ${{ env.DATABASE_NAME }}
+          MYSQL_ROOT_PASSWORD: ${{ env.DATABASE_PASSWORD }}
+        ports:
+          - 3306/tcp
+        # Set health checks to wait until mysql has started
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s 
+          --health-retries=3
     steps:
     - uses: actions/checkout@v2
     - name: donwload skeema
@@ -19,5 +43,5 @@ jobs:
         wget https://github.com/skeema/skeema/releases/download/v1.4.5/skeema_1.4.5_linux_amd64.tar.gz
         tar -xf skeema_1.4.5_linux_amd64.tar.gz
         chmod +x skeema
-        ./skeema
+        ./skeema push ci
       

@@ -5,6 +5,13 @@ host=localhost
 socket=/tmp/mysql.sock
 user=root
 
+[ci]
+schema=ci
+host=localhost
+port=3306
+allow-unsafe
+user=test
+
 [development]
 schema=testdb
 
