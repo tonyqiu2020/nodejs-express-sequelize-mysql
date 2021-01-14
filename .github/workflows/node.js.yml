@@ -49,10 +49,13 @@ jobs:
           PORT: ${{ job.services.mysql.ports[3306] }}
       run: | 
         ./skeema push ci --port=$PORT
-    - name: switch to branch
+    - name: switch to current feature branch
       uses: actions/checkout@v2
+      with:
+        path: current-repo
     - name: lint and diff
       env:
             PORT: ${{ job.services.mysql.ports[3306] }}
       run: |
-        ./skeema diff ci --port=$PORT
+        cd current-repo
+        ../skeema diff ci --port=$PORT
